@@ -18,7 +18,7 @@ func expensiveCompuation(data int, id int, answer chan Answer) {
 
 	for result > 1.0001 {
 		result = math.Sqrt(result)
-		time.Sleep(time.Millisecond * time.Duration(rand.Intn(500)))
+		time.Sleep(time.Millisecond * time.Duration(rand.Intn(100)))
 	}
 	a.id = id
 	a.result = result
@@ -26,14 +26,19 @@ func expensiveCompuation(data int, id int, answer chan Answer) {
 }
 
 func main() {
+	const allDone = 2
 	doneCount := 0
 	waitTag := 0
 	answer1 := make(chan Answer)
 	answer2 := make(chan Answer)
+	defer func() {
+		close(answer1)
+		close(answer2)
+	}()
 	go expensiveCompuation(9999, 1, answer1)
 	go expensiveCompuation(10, 2, answer2)
 
-	for doneCount < 2 {
+	for doneCount < allDone {
 		select {
 		case a1 := <-answer1:
 			doneCount++
@@ -42,11 +47,12 @@ func main() {
 			doneCount++
 			fmt.Printf("%d -> %g\n", a2.id, a2.result)
 		default:
-			if waitTag%10000 == 0 {
+			if waitTag%1000 == 0 {
 				fmt.Printf("Waiting ... %d\n", waitTag)
-				time.Sleep(time.Millisecond * time.Duration(rand.Intn(500)))
+				time.Sleep(time.Millisecond * time.Duration(rand.Intn(100)))
 			}
 			waitTag++
+
 		}
 	}
 	fmt.Println()
