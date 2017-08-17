@@ -44,7 +44,7 @@ func main() {
 		default:
 			if waitTag%10000 == 0 {
 				fmt.Printf("Waiting ... %d\n", waitTag)
-        time.Sleep(time.Millisecond * time.Duration(rand.Intn(500)))
+				time.Sleep(time.Millisecond * time.Duration(rand.Intn(500)))
 			}
 			waitTag++
 		}
