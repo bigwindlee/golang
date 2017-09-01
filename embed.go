@@ -4,7 +4,7 @@
 3. interface embedding (Will be assigned any value that satisfies the interface)
 4. Partially initialize struct by using the syntax fieldName: fieldValue
 5. idiom of for...range loop handling interface slice
-6. type switch 
+6. type switch
 */
 
 package main
